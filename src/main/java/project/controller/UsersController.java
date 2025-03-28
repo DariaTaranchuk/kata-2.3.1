@@ -2,9 +2,12 @@ package project.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import project.model.User;
 import project.service.UserService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
@@ -29,26 +32,35 @@ public class UsersController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") User user) {
-        userService.save(user);
-        return "redirect:/users";
+    public String create(@ModelAttribute("user") @Valid User user,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/create";
+        } else {
+            userService.createUser(user);
+            return "redirect:/users";
+        }
     }
 
     @GetMapping("/update")
     public String updateForm(@RequestParam(value = "id") long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", userService.getUser(id));
         return "/update";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute("user") User user) {
-        userService.update(user.getId(), user);
+    public String update(@ModelAttribute("user") @Valid User user,
+                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "/update";
+        }
+        userService.updateUser(user.getId(), user);
         return "redirect:/users";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam(value = "id") long id) {
-        userService.delete(id);
+        userService.deleteUser(id);
         return "redirect:/users";
     }
 }

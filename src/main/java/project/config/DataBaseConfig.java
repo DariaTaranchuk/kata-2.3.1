@@ -64,6 +64,7 @@ public class DataBaseConfig {
         props.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        props.put("hibernate.connection.charSet", "UTF-8");
         return props;
     }
 

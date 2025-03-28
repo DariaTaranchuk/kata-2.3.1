@@ -1,6 +1,10 @@
 package project.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -8,13 +12,19 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
+    
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$", message = "Имя не может содержать символы отличные от букв")
     @Column
     private String name;
 
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Pattern(regexp = "^[а-яА-ЯёЁa-zA-Z]+$", message = "Имя не может содержать символы отличные от букв")
     @Column
     private String surname;
 
+    @NotNull(message = "Поле не может быть пустым")
+    @Min(value = 0, message = "Возраст должен быть больше нуля")
     @Column
     private int age;
 
